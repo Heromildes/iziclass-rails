@@ -1,0 +1,41 @@
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-12 vh-100">
+      <div class="bg-light rounded h-100 p-4">
+        <!-- Title and button -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0 text-left">Lista de Tarefas</h5>
+        <div class="text-center">
+          <%= link_to "Nova Tarefa", new_tasklist_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+      <!-- Search -->
+      <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Pesquisar...">
+      </div>
+      <!-- Table Start -->
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <% @tasklists.each do |tasklist| %>
+                <tr>
+                  <th width="50%" ><%= tasklist.title %></th>
+                  <td width="23%" style="text-align: right;">Fazer até: <b><%= tasklist.deadline %></b></td>
+                  <td width="20%" style="text-align: right;">
+                    Ok
+                    Editar
+                    Deletar
+                  </td>
+                </tr>
+             <% end %>
+            </tbody>
+          </table>
+                                
+        </div>
+        <!-- Table end -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
