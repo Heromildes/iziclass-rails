@@ -9,33 +9,115 @@
           <%= link_to "Nova Tarefa", new_tasklist_path, class: "btn btn-primary" %>
         </div>
       </div>
-      <!-- Search -->
+     <!-- Search -->
       <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Pesquisar...">
+        <input type="text" class="form-control" placeholder="Pesquisar..." id="searchInput">
       </div>
+
       <!-- Table Start -->
-        <div class="table-responsive">
-          <table class="table">
-            <tbody>
-              <% @tasklists.each do |tasklist| %>
-                <tr>
-                  <th width="50%" ><%= tasklist.title %></th>
-                  <td width="23%" style="text-align: right;">Fazer até: <b><%= tasklist.deadline %></b></td>
-                  <td width="20%" style="text-align: right;">
-                    Ok
-                    Editar
-                    Deletar
-                  </td>
-                </tr>
-             <% end %>
-            </tbody>
-          </table>
-                                
-        </div>
-        <!-- Table end -->
+      <div class="table-responsive">
+        <table class="table">
+          <tbody id="taskList">
+            <% @tasklists.each do |tasklist| %>
+              <tr>
+                <th width="50%"><%= tasklist.title %></th>
+                <td width="23%" style="text-align: right;">Fazer até: <b><%= tasklist.deadline %></b></td>
+                <td width="20%" style="text-align: right;">
+                  Ok
+                  Editar
+                  Deletar
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- Table end -->
+      <!-- Pagination -->
+<div id="pagination" class="text-center">
+  <nav aria-label="Page navigation example ">
+    <ul class="pagination justify-content-center">
+      <li class="page-item"><button class="page-link" id="prevPage">Anterior</button></li>
+      <li class="page-item"><button class="page-link" id="nextPage">Próximo</button></li>
+    </ul>
+  </nav>
+</div>
+
       </div>
 
     </div>
   </div>
 </div>
+<script>
+  // Your initial list of tasks (e.g., taskData) and items per page
+  const taskData = <%= @tasklists.to_json.html_safe %>;
+  const itemsPerPage = 5;
+  let currentPage = 1;
+  let filteredData = taskData;
 
+  const taskList = document.getElementById('taskList');
+  const prevPageButton = document.getElementById('prevPage');
+  const nextPageButton = document.getElementById('nextPage');
+  const searchInput = document.getElementById('searchInput');
+
+  function filterAndDisplayTasks() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    // Filter the data based on the search term
+    filteredData = taskData.filter(task => {
+      return task.title.toLowerCase().includes(searchTerm);
+    });
+
+    // Display the filtered data
+    taskList.innerHTML = ''; // Clear the current list
+    const tasksToShow = filteredData.slice(start, end);
+
+    tasksToShow.forEach(task => {
+      const taskRow = document.createElement('tr');
+      taskRow.innerHTML = `
+        <th width="50%">${task.title}</th>
+        <td width="23%" style="text-align: right;">Fazer até: <b>${task.deadline}</b></td>
+        <td width="20%" style="text-align: right;">
+          Ok
+          Editar
+          Deletar
+        </td>
+      `;
+      taskList.appendChild(taskRow);
+    });
+
+    updatePagination();
+  }
+
+  function updatePagination() {
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage * itemsPerPage >= filteredData.length;
+  }
+
+  // Initial display
+  filterAndDisplayTasks();
+
+  // Event listener for the "Próximo" button
+  nextPageButton.addEventListener('click', function () {
+    if (currentPage * itemsPerPage < filteredData.length) {
+      currentPage++;
+      filterAndDisplayTasks();
+    }
+  });
+
+  // Event listener for the "Anterior" button
+  prevPageButton.addEventListener('click', function () {
+    if (currentPage > 1) {
+      currentPage--;
+      filterAndDisplayTasks();
+    }
+  });
+
+  // Event listener for the search input
+  searchInput.addEventListener('keyup', function () {
+    currentPage = 1; // Reset to the first page when searching
+    filterAndDisplayTasks();
+  });
+</script>

@@ -12,26 +12,20 @@
   <% end %>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+    <%= form.label :title, style: "display: block", class: "form-label" %>
+    <%= form.text_field :title, class: "form-control mb-3" %>
   </div>
 
   <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+    <%= form.label :description, style: "display: block", class: "form-label" %>
+    <%= form.text_area :description, class: "form-control mb-3" %>
   </div>
 
   <div>
-    <%= form.label :deadline, style: "display: block" %>
-    <%= form.date_field :deadline %>
+    <%= form.label :deadline, style: "display: block", class: "form-label" %>
+    <%= form.date_field :deadline, class: "form-control mb-3" %>
   </div>
-
   <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary" %>
   </div>
 <% end %>

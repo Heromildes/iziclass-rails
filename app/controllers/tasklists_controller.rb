@@ -26,7 +26,7 @@ class TasklistsController < ApplicationController
 
     respond_to do |format|
       if @tasklist.save
-        format.html { redirect_to tasklist_url(@tasklist), notice: "Tasklist was successfully created." }
+        format.html { redirect_to tasklists_url(@tasklist), notice: "Tasklist was successfully created." }
         format.json { render :show, status: :created, location: @tasklist }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class TasklistsController < ApplicationController
     respond_to do |format|
       if @tasklist.update(tasklist_params)
         format.html { redirect_to tasklist_url(@tasklist), notice: "Tasklist was successfully updated." }
-        format.json { render :show, status: :ok, location: @tasklist }
+        format.json { render :index, status: :ok, location: @tasklist }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @tasklist.errors, status: :unprocessable_entity }
