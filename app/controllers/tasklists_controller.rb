@@ -4,7 +4,7 @@ class TasklistsController < ApplicationController
 
   # GET /tasklists or /tasklists.json
   def index
-    @tasklists = current_user.tasklists
+    @tasklists = current_user.tasklists.order(:deadline)
   end
 
   # GET /tasklists/1 or /tasklists/1.json
