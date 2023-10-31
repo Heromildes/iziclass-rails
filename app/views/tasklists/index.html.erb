@@ -16,38 +16,96 @@
 
       <!-- Table Start -->
       <div class="table-responsive">
-        <table class="table table-hover">
-          <tbody id="taskList">
-            <% @tasklists.each do |tasklist| %>
-              <tr>
-                <th width="50%" class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %>"><%= tasklist.title %></th>
-                <td width="23%" style="text-align: right;" class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %>">
-                  Fazer até: <b><%= tasklist.deadline %></b>
-                </td>
-                <td width="20%" style="text-align: right;">
-                  
-                  Editar
-                  Deletar
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+<table class="table table-hover">
+  <tbody id="taskList">
+    <% @tasklists.each do |tasklist| %>
+      <tr>
+        <th width="40%" class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %>"><%= tasklist.title %></th>
+        <td width="23%" style="text-align: right;" class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %>">
+          Fazer até: <b><%= tasklist.deadline %></b>
+        </td>
+        <td width="30%" style="text-align: right">
+          <%= link_to edit_tasklist_path(tasklist) do %>
+            <i class="bi bi-pencil-square" style="font-size: 22px;"></i>
+          <% end %>
+          <%= link_to tasklist, data: { turbo_method: :delete } do %>
+            <i class="bi bi-trash" style="font-size: 22px; color: red;"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
       </div>
       <!-- Table end -->
       <!-- Pagination -->
-<div id="pagination" class="text-center">
-  <nav aria-label="Page navigation example ">
-    <ul class="pagination justify-content-center">
-      <li class="page-item"><button class="page-link" id="prevPage">Anterior</button></li>
-      <li class="page-item"><button class="page-link" id="nextPage">Próximo</button></li>
-    </ul>
-  </nav>
-</div>
+        <% if @tasklists.count > 10 %>
+          <div id="pagination" class="text-center ">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item"><button class="page-link" id="prevPage">Anterior</button></li>
+              <li class="page-item"><button class="page-link" id="nextPage">Próximo</button></li>
+            </ul>
+          </nav>
+        </div>
+        <% end %>
 
       </div>
-
     </div>
   </div>
 </div>
 
+
+<!-- Search Script -->
+<script>
+  $(document).ready(function () {
+    $('#searchInput').on('input', function () {
+      var searchText = $(this).val().toLowerCase();
+      $('#taskList tr').each(function () {
+        var taskTitle = $(this).find('th').text().toLowerCase();
+        if (taskTitle.indexOf(searchText) === -1) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+    });
+  });
+</script>
+
+
+<!-- Pagination Script -->
+<script>
+  $(document).ready(function () {
+    var rowsPerPage = 10; // Número de linhas por página
+    var currentPage = 0; // Página atual
+    var taskListRows = $('#taskList tr');
+
+    // Função para mostrar as linhas correspondentes à página atual
+    function showPage(page) {
+      taskListRows.hide();
+      taskListRows.slice(page * rowsPerPage, (page + 1) * rowsPerPage).show();
+    }
+
+    // Inicialmente, mostre a primeira página
+    showPage(currentPage);
+
+    // Botão "Anterior"
+    $('#prevPage').click(function () {
+      if (currentPage > 0) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    });
+
+    // Botão "Próximo"
+    $('#nextPage').click(function () {
+      var totalPages = Math.ceil(taskListRows.length / rowsPerPage);
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    });
+  });
+</script>

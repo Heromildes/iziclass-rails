@@ -56,6 +56,8 @@ class TasklistsController < ApplicationController
       format.html { redirect_to tasklists_url, notice: "Tasklist was successfully destroyed." }
       format.json { head :no_content }
     end
+    
+    
   end
 
   private
