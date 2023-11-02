@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="assets/extensions/simple-datatables/style.css">
+<link rel="stylesheet" href="./assets/compiled/css/table-datatable.css">
+
+
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Tarefas</h3>
+                <p class="text-subtitle text-muted">A sortable, searchable, paginated table without dependencies thanks to simple-datatables.</p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">DataTable</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">
+                    Lista de Tarefas
+                </h5>
+                <div class="text-center">
+                  <%= link_to "Nova Tarefa", new_tasklist_path, class: "btn btn-primary" %>
+                </div>
+            </div>
+            <div class="card-body">
+                            <table class="table table-hover mb-0" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th>Prazo</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <% @tasklists.each do |tasklist| %>
+                                    <tr>
+                                        <td class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %> <%= tasklist.done ? 'text-decoration-line-through' : '' %>"><%= tasklist.title %></td>
+                                        <td class="<%= tasklist.deadline < Date.today ? 'text-danger' : '' %> <%= tasklist.done ? 'text-decoration-line-through' : '' %>">Fazer até: <b><%= tasklist.deadline %></b></td>
+                                        
+                                        <td style="display: flex; justify-content: flex-end; align-items: center;">
+                                          <div style="max-width: 100px; margin-right: 10px;" class="mt-1">
+                                            <%= form_with(model: tasklist) do |f| %>
+                                              <%= f.check_box :done, class: 'submit-on-change', style: 'width: 20px; height: 20px;' %>
+                                            <% end %>
+                                          </div>
+
+                                          <div style="max-width: 100px; margin-right: 10px;">
+                                            <%= link_to edit_tasklist_path(tasklist) do %>
+                                              <i class="bi bi-pencil-square" style="font-size: 22px;"></i>
+                                            <% end %>
+                                          </div>
+
+                                          <div style="max-width: 100px;">
+                                            <%= link_to tasklist, data: { turbo_method: :delete } do %>
+                                              <i class="bi bi-trash" style="font-size: 22px; color: red;"></i>
+                                            <% end %>
+                                          </div>
+                                        </td>
+
+                                    </tr>
+                                  <% end %>
+                                </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                        
+
+
+<style>
+.task-done .task-title {
+  text-decoration: line-through;
+  color: gray;
+}
+
+</style>
+
+
+<script>
+  // put this in the assets pipeline / webpacker
+document.addEventListener('change', function(e){
+  if (e.target.matches('.submit-on-change') && e.target.form){
+    e.target.form.submit();
+  }
+});
+</script>
+<script src="assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+<script src="assets/static/js/pages/simple-datatables.js"></script>
