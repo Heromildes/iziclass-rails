@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :tasklists
+  # config/routes.rb
+resources :tasklists
+
   devise_for :users
   root 'dashboard#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
