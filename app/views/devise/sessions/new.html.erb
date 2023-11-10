@@ -1,26 +1,37 @@
-<h2>Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+<div id="auth-left">
+            <div class="auth-logo">
+                <a href="index.html"><img src="./assets/compiled/svg/logo.svg" alt="Logo"></a>
+            </div>
+            <h1 class="auth-title">Log in.</h1>
+            <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                <div class="form-group position-relative has-icon-left mb-4">
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-xl", placeholder: "Email" %>  
+                    <div class="form-control-icon">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    
+                </div>
+                <div class="form-group position-relative has-icon-left mb-4">
+                    <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-control-xl", placeholder: "Password" %>
+                    <div class="form-control-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                </div>
+                <% if devise_mapping.rememberable? %>
+                <div class="form-check form-check-lg d-flex align-items-end">
+                    <%= f.check_box :remember_me, class: "form-check-input me-2", id: "flexCheckDefault" %>
+                    <%= f.label :remember_me, class: "form-check-label text-gray-600" %>
+                </div>
+                <% end %>
+                <%= f.submit "Log in", class: "btn btn-primary btn-block btn-lg shadow-lg mt-5" %>
+            <% end %>
+            <div class="text-center mt-5 text-lg fs-4">
+                <p class="text-gray-600">Don't have an account? <%= link_to "Sign up", new_registration_path(resource_name), class: "font-bold" %>.</p>
+                <p><%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-bold" %>.</p>
+            </div>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

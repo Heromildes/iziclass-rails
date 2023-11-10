@@ -59,7 +59,7 @@
                                           </div>
 
                                           <div style="max-width: 100px;">
-                                            <%= link_to tasklist, data: { turbo_method: :delete } do %>
+                                            <%= link_to tasklist, data: { turbo_method: :delete }, onclick: "return confirm('Tem certeza que deseja excluir este item?')" do %>
                                               <i class="bi bi-trash" style="font-size: 22px; color: red;"></i>
                                             <% end %>
                                           </div>
